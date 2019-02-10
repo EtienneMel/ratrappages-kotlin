@@ -22,7 +22,7 @@ fun main(args: Array<String>?) {
     try {
         val kpis1 = ArrayList<Kpis>()
         var line: String?
-        
+
         fileReader = BufferedReader(FileReader("pouet.csv"))
 
         // Read CSV header
@@ -30,21 +30,21 @@ fun main(args: Array<String>?) {
 
         // Read the file line by line starting from the second line
         line = fileReader.readLine()
-
         while (line != null) {
+
             val tokens = line.split(";")
             if (tokens.size > 0) {
                 val kpis2 = Kpis(
-                    tokens[DONNEES_ANNEE],
+                    Integer.parseInt(tokens[DONNEES_ANNEE]),
                     tokens[DONNEES_MOIS],
                     tokens[DONNEES_APPAREIL],
-                    tokens[DONNEES_COMMANDES],
-                    tokens[DONNEES_IMPRESSION],
-                    tokens[DONNEES_CLICS],
-                    tokens[DONNEES_COUTS],
-                    tokens[DONNEES_CHIFFRE_AFFAIRES]
-                    )
-                    kpis1.add(kpis2)
+                    NumberFormat.getNumberInstance(Locale.FRANCE).parse(tokens[DONNEES_COMMANDES]),
+                    Integer.parseInt(tokens[DONNEES_IMPRESSION]),
+                    Integer.parseInt(tokens[DONNEES_CLICS]),
+                    NumberFormat.getNumberInstance(Locale.FRANCE).parse(tokens[DONNEES_COUTS]),
+                    NumberFormat.getNumberInstance(Locale.FRANCE).parse(tokens[DONNEES_CHIFFRE_AFFAIRES])
+                )
+                kpis1.add(kpis2)
             }
 
             line = fileReader.readLine()
@@ -66,3 +66,4 @@ fun main(args: Array<String>?) {
         }
     }
 }
+
