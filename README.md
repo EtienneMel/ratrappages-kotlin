@@ -4,5 +4,4 @@
 
 - Etienne MELA
 - Kévin RICHARD
-- Alexandre Guillemin
-
+- Alexandre GUILLEMIN
