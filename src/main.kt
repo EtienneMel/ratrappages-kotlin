@@ -23,6 +23,10 @@ fun main(args: Array<String>?) {
         val kpis1 = ArrayList<Kpis>()
         var line: String?
 
+        val mapAnnees= mutableMapOf<Int, MutableMap<String, Number>>()
+        val mapAppareils = mutableMapOf<String, Number>()
+        val mapAppareilsParMois = mutableMapOf<String, MutableMap<String, Number>>()
+
         fileReader = BufferedReader(FileReader("pouet.csv"))
 
         // Read CSV header
@@ -49,9 +53,13 @@ fun main(args: Array<String>?) {
 
             line = fileReader.readLine()
         }
-        // Print the new customer list
+
+
+        // Add it to the maps
         for (ligne in kpis1) {
-            println(ligne)
+            initialiserMapAnnees(mapAnnees, ligne.annee, ligne.mois, ligne.chiffreAffaire)
+            initialiserMapAppareils(mapAppareils, ligne.appareil, ligne.chiffreAffaire)
+            initialiserMapAppareilsParMois(mapAppareilsParMois, ligne.appareil, ligne.mois, ligne.chiffreAffaire)
         }
 
     } catch (e: Exception) {
@@ -67,3 +75,39 @@ fun main(args: Array<String>?) {
     }
 }
 
+fun initialiserMapAnnees(map: MutableMap<Int, MutableMap<String, Number>>, annee: Int, mois: String, valeur: Number)
+{
+    var listeAnnees = mutableMapOf<String, Number>()
+    var chiffreAffaire: Number = 0
+
+    if (map.contains(annee))
+        listeAnnees = map[annee]!!
+    if (listeAnnees.contains(mois))
+        chiffreAffaire = listeAnnees[mois]!!
+
+    listeAnnees[mois] = chiffreAffaire.toFloat() + valeur.toFloat()
+    map[annee] = listeAnnees
+}
+
+fun initialiserMapAppareilsParMois(map: MutableMap<String, MutableMap<String, Number>>, appareil: String, mois: String, valeur: Number)
+{
+    var mapMois = mutableMapOf<String, Number>()
+    var chiffreAffaire: Number = 0
+
+    if (map.contains(appareil))
+        mapMois = map[appareil]!!
+    if (mapMois.contains(mois))
+        chiffreAffaire = mapMois[mois]!!
+
+    mapMois[mois] = chiffreAffaire.toFloat() + valeur.toFloat()
+    map[appareil] = mapMois
+}
+
+fun initialiserMapAppareils(map: MutableMap<String, Number>, appareil: String, valeur: Number) {
+    var chiffreAffaire: Number = 0
+
+    if (map.contains(appareil))
+        chiffreAffaire = map[appareil]!!
+
+    map[appareil] = chiffreAffaire.toFloat() + valeur.toFloat()
+}
